@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TayNinhTourApi.BusinessLogicLayer.DTOs.Request.Authentication
 {
@@ -17,5 +18,8 @@ namespace TayNinhTourApi.BusinessLogicLayer.DTOs.Request.Authentication
         public string PhoneNumber { get; set; } = null!;
 
         public string? Avatar { get; set; } = null!;
+
+        [JsonIgnore]
+        public string? ClientIp { get; set; }
     }
 }

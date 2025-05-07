@@ -8,5 +8,6 @@ namespace TayNinhTourApi.BusinessLogicLayer.Services.Interface
     {
         Task<ResponseAuthenticationDto> RegisterAsync(RequestRegisterDto request);
         Task<ResponseAuthenticationDto> LoginAsync(RequestLoginDto request);
+        Task<ResponseVerifyOtpDto> VerifyOtpAsync(RegisterVerifyOtpRequestDto request);
     }
 }

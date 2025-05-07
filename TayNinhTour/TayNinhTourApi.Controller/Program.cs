@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using TayNinhTourApi.BusinessLogicLayer.Common;
 using TayNinhTourApi.BusinessLogicLayer.Mapping;
 using TayNinhTourApi.BusinessLogicLayer.Services;
 using TayNinhTourApi.BusinessLogicLayer.Services.Interface;
@@ -46,8 +47,9 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Register DbContext with MySQL
 builder.Services.AddDbContext<TayNinhTouApiDbContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!));
 
 // Add authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -64,19 +66,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+// Register AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-
-builder.Services.AddScoped<BcryptUtility>();
-builder.Services.AddScoped<DataSeeder>();
-builder.Services.AddScoped<JwtUtility>();
-
 
 // Register services layer
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ICmsService, CmsService>();
 
 // Register repositories layer
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
+// Register utilities
+builder.Services.AddScoped<BcryptUtility>();
+builder.Services.AddScoped<DataSeeder>();
+builder.Services.AddScoped<JwtUtility>();
+builder.Services.AddScoped<EmailSender>();
+
+// Configure email settings
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+// Register IMemoryCache
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

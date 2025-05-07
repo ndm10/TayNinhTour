@@ -8,6 +8,7 @@
         public string PhoneNumber { get; set; } = null!;
         public string Avatar { get; set; } = null!;
         public string? TOtpSecret { get; set; }
+        public bool IsVerified { get; set; }
         public Guid RoleId { get; set; }
         public virtual Role Role { get; set; } = null!;
     }
