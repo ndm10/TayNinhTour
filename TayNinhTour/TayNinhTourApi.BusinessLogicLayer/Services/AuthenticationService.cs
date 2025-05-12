@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Caching.Memory;
 using TayNinhTourApi.BusinessLogicLayer.Common;
+using TayNinhTourApi.BusinessLogicLayer.DTOs;
 using TayNinhTourApi.BusinessLogicLayer.DTOs.Request.Authentication;
 using TayNinhTourApi.BusinessLogicLayer.DTOs.Response.Authentication;
 using TayNinhTourApi.BusinessLogicLayer.Services.Interface;
@@ -34,7 +35,7 @@ namespace TayNinhTourApi.BusinessLogicLayer.Services
             _emailSender = emailSender;
         }
 
-        public async Task<ResponseAuthenticationDto> RegisterAsync(RequestRegisterDto request)
+        public async Task<BaseResposeDto> RegisterAsync(RequestRegisterDto request)
         {
             // Generate OTP and save it to cache
             string otp = new Random().Next(100000, 999999).ToString();
@@ -87,7 +88,11 @@ namespace TayNinhTourApi.BusinessLogicLayer.Services
             await _userRepository.SaveChangesAsync();
 
             // Return success response
-            return GenerateTokenAsync(newUser);
+            return new ResponseAuthenticationDto
+            {
+                StatusCode = 200,
+                Message = "Register successfully, the OTP is send to your email!",
+            };
         }
 
         public async Task<ResponseAuthenticationDto> LoginAsync(RequestLoginDto request)
@@ -145,11 +150,7 @@ namespace TayNinhTourApi.BusinessLogicLayer.Services
                 Email = newUser.Email,
                 Name = newUser.Name,
                 PhoneNumber = newUser.PhoneNumber,
-                StatusCode = 200,
-                Message = "Register successfully. OTP is sent to your e" +
-                "" +
-                "" +
-                "mail!"
+                StatusCode = 200
             };
         }
 

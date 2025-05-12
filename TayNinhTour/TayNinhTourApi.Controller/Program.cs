@@ -49,7 +49,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Register DbContext with MySQL
 builder.Services.AddDbContext<TayNinhTouApiDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!));
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection2")!));
 
 // Add authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

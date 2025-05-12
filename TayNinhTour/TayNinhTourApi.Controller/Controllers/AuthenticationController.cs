@@ -20,7 +20,7 @@ namespace TayNinhTourApi.Controller.Controllers
         }
         
         [HttpPost("register")]
-        public async Task<ActionResult<ResponseAuthenticationDto>> Register(RequestRegisterDto request)
+        public async Task<ActionResult<BaseResposeDto>> Register(RequestRegisterDto request)
         {
             string clientIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? string.Empty;
             
