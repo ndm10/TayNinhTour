@@ -75,7 +75,7 @@ namespace TayNinhTourApi.BusinessLogicLayer.Services
 
                 await _userRepository.AddAsync(newUser);
             }
-            else if (existingUser != null && existingUser.IsVerified)
+            else if (existingUser != null && !existingUser.IsVerified)
             {
                 existingUser.Email = request.Email;
                 existingUser.Name = request.Name;
@@ -83,12 +83,20 @@ namespace TayNinhTourApi.BusinessLogicLayer.Services
                 existingUser.PhoneNumber = request.PhoneNumber;
                 existingUser.Avatar = request.Avatar ?? existingUser.Avatar;
             }
+            else if (existingUser != null && existingUser.IsVerified)
+            {
+                return new BaseResposeDto
+                {
+                    StatusCode = 400,
+                    Message = "Email is already registered, please login to your account!"
+                };
+            }
 
             // Save user to database
             await _userRepository.SaveChangesAsync();
 
             // Return success response
-            return new ResponseAuthenticationDto
+            return new BaseResposeDto
             {
                 StatusCode = 200,
                 Message = "Register successfully, the OTP is send to your email!",
